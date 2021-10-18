@@ -10,7 +10,7 @@ EndProject
 Project("{2150E333-8FDC-42A3-9474-1A3956D46DE8}") = "common", "common", "{8E92C24D-4B24-46BD-B88F-DFA8504DD15E}"
 	ProjectSection(SolutionItems) = preProject
 		.gitignore = .gitignore
-		readme.md = readme.md
+		README.md = README.md
 	EndProjectSection
 EndProject
 Project("{2150E333-8FDC-42A3-9474-1A3956D46DE8}") = "tests", "tests", "{087FE1D7-905E-4FA3-A565-8697AA393E79}"
