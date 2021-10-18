@@ -14,8 +14,7 @@ RUN dotnet publish "Ozon.Route256.MerchandiseService.csproj" -c Release -o /app/
 FROM mcr.microsoft.com/dotnet/aspnet:5.0 AS final
 WORKDIR /app
 
-EXPOSE 5000
-EXPOSE 5001
+EXPOSE 80
 
 COPY --from=publish /app/publish .
 
