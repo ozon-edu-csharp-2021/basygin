@@ -2,8 +2,8 @@
 
 services:
   merchandise-service:
-    build:
-      context: ../
+    image: merchendise-service:local
+    build: ../
     hostname: merchandise-service
     ports:
       - "8080:80"
@@ -26,7 +26,7 @@ services:
     ports:
       - "8083:80"
 
-  employees-service:
+  employees-service:    
     image: ghcr.io/ozon-edu-csharp-2021/employees-service:main
     hostname: employees-service
     ports:
