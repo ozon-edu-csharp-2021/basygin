@@ -15,7 +15,7 @@ namespace Ozon.Route256.MerchandiseService.Infrastructure.StartupFilters
                 app.Map("/ready", builder => builder.UseMiddleware<ReadyMiddleware>());
                 app.Map("/live", builder => builder.UseMiddleware<LiveMiddleware>());
 
-                app.MapWhen(context => context.Request.ContentType != "application/grpc", builder =>
+                app.UseWhen(context => context.Request.ContentType != "application/grpc", builder =>
                 {
                     builder.UseMiddleware<LoggingMiddleware>();
                 });
