@@ -1,0 +1,41 @@
+﻿syntax = "proto3";
+
+option csharp_namespace = "Ozon.Route256.MerchandiseService";
+package MerchandiseService;
+
+import "google/protobuf/empty.proto";
+
+service MerchandiseService {
+  rpc CreateMerchRequest(MerchRequestCreateModel) returns (google.protobuf.Empty);
+
+  rpc GetMerchRequestByEmployeeId(GetMerchRequestByEmployeeIdRequest) returns (GetMerchRequestByEmployeeIdResponse);
+}
+
+message MerchRequestCreateModel {
+  int64 employee_id = 1;
+  MerchType merch_type = 2;
+}
+
+message GetMerchRequestByEmployeeIdRequest {
+  int64 employee_id = 1;
+}
+
+message GetMerchRequestByEmployeeIdResponse {
+  repeated GetMerchRequestByEmployeeIdResponseItem merch_requests = 1;
+}
+
+message GetMerchRequestByEmployeeIdResponseItem {
+  string id = 1;
+  int64 employee_id = 2;
+  MerchType merch_type = 3;
+}
+
+enum MerchType
+{
+  None = 0;
+  WelcomePack = 10;
+  ConferenceListenerPack = 20;
+  ConferenceSpeakerPack = 30;
+  ProbationPeriodEndingPack = 40;
+  VeteranPack = 50;
+}
