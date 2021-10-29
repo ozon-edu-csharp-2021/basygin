@@ -12,7 +12,7 @@ namespace Ozon.Route256.MerchandiseService.Controllers
     public class MerchController : ControllerBase
     {
         [HttpPost]
-        public Task<IActionResult> MerchRequest(HttpModels.RequestMerchRequestModel merchRequest, CancellationToken token)
+        public Task<IActionResult> MerchRequest(RequestMerchRequestModel merchRequest, CancellationToken token)
         {
             throw new NotImplementedException();
         }
