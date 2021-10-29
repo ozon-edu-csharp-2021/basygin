@@ -10,10 +10,9 @@ namespace Ozon.Route256.MerchandiseService.Infrastructure.Filters
         {
             var exception = new
             {
-                ExceptionType = context.Exception.GetType().FullName,
+                ExceptionType = context.Exception.GetType().Name,
                 Message = context.Exception.StackTrace
             };
-
             var jsonResult = new JsonResult(exception)
             {
                 StatusCode = StatusCodes.Status500InternalServerError,

@@ -13,13 +13,13 @@ namespace Ozon.Route256.MerchandiseService.Controllers
     public class MerchController : ControllerBase
     {
         [HttpPost]
-        public Task<IActionResult> CreateMerchRequest(MerchRequestCreateModel createModel, CancellationToken token)
+        public Task<IActionResult> MerchRequest(HttpModels.RequestMerchRequestModel merchRequest, CancellationToken token)
         {
             throw new NotImplementedException();
         }
         
-        [HttpGet]
-        public Task<ActionResult<List<MerchRequestModel>>> GetMerchRequestByEmployeeId([FromQuery] long EmployeeId, CancellationToken token)
+        [HttpGet("{id:Guid}")]
+        public Task<ActionResult<RequestMerchModel>> GetRequestMerchById([FromQuery] Guid id, CancellationToken token)
         {
             throw new NotImplementedException();
         }

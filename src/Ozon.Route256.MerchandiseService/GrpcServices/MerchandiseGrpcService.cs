@@ -1,4 +1,5 @@
-﻿using System.Threading.Tasks;
+﻿using System;
+using System.Threading.Tasks;
 using Google.Protobuf.WellKnownTypes;
 using Grpc.Core;
 
@@ -6,16 +7,18 @@ namespace Ozon.Route256.MerchandiseService.GrpcServices
 {
     public class MerchandiseGrpcService : MerchandiseService.MerchandiseServiceBase
     {
-        public override Task<Empty> CreateMerchRequest(MerchRequestCreateModel request, ServerCallContext context)
+        public override Task<Empty> RequestMerch(RequestMerchRequest request, ServerCallContext context)
         {
             return Task.FromResult(new Empty());
         }
 
-        public override Task<GetMerchRequestByEmployeeIdResponse> GetMerchRequestByEmployeeId(GetMerchRequestByEmployeeIdRequest request, ServerCallContext context)
+        public override Task<GetRequestMerchByIdResponse> GetRequestMerchById(GetRequestMerchByIdRequest request, ServerCallContext context)
         {
-            return Task.FromResult(new GetMerchRequestByEmployeeIdResponse()
+            return Task.FromResult(new GetRequestMerchByIdResponse()
             {
-                MerchRequests = {  }
+                Id = Guid.NewGuid().ToString(),
+                EmployeeId = 123,
+                MerchType = MerchType.VeteranPack
             });
         }
     }

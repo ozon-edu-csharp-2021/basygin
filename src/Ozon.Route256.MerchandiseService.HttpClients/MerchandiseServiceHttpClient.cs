@@ -10,7 +10,7 @@ using Ozon.Route256.MerchandiseService.HttpModels;
 
 namespace Ozon.Route256.MerchandiseService.HttpClients
 {
-    public class MerchandiseServiceHttpClient : IMerchandiseServiceHttpClient
+    public class MerchandiseServiceHttpClient
     {
         private readonly HttpClient _httpClient;
 
@@ -19,9 +19,9 @@ namespace Ozon.Route256.MerchandiseService.HttpClients
             _httpClient = httpClient;
         }
         
-        public async Task CreateMerchRequestAsync(MerchRequestCreateModel merchRequestCreateModel, CancellationToken token)
+        public async Task CreateMerchRequestAsync(RequestMerchRequestModel merchRequest, CancellationToken token)
         {
-            var jsonContent = JsonContent.Create(merchRequestCreateModel);
+            var jsonContent = JsonContent.Create(merchRequest);
             
             using var response = await _httpClient.PostAsync("v1/api/merch", jsonContent, token);
             
@@ -31,9 +31,9 @@ namespace Ozon.Route256.MerchandiseService.HttpClients
             }
         }
 
-        public async Task<List<MerchRequestModel>> GetMerchRequestsByEmployeeIdAsync(long employeeId, CancellationToken token)
+        public async Task<RequestMerchModel> GetRequestMerchByIdAsync(Guid id, CancellationToken token)
         {
-            using var response = await _httpClient.GetAsync($"v1/api/merch?employeeId={employeeId}", token);
+            using var response = await _httpClient.GetAsync($"v1/api/merch/{id}", token);
             
             if (response.StatusCode != HttpStatusCode.OK)
             {
@@ -41,7 +41,7 @@ namespace Ozon.Route256.MerchandiseService.HttpClients
             }
             
             var body = await response.Content.ReadAsStringAsync(token);
-            return JsonSerializer.Deserialize<List<MerchRequestModel>>(body);
+            return JsonSerializer.Deserialize<RequestMerchModel>(body);
         }
     }
 }

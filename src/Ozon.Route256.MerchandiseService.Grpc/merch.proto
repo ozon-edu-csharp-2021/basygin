@@ -6,25 +6,21 @@ package MerchandiseService;
 import "google/protobuf/empty.proto";
 
 service MerchandiseService {
-  rpc CreateMerchRequest(MerchRequestCreateModel) returns (google.protobuf.Empty);
+  rpc RequestMerch(RequestMerchRequest) returns (google.protobuf.Empty);
 
-  rpc GetMerchRequestByEmployeeId(GetMerchRequestByEmployeeIdRequest) returns (GetMerchRequestByEmployeeIdResponse);
+  rpc GetRequestMerchById(GetRequestMerchByIdRequest) returns (GetRequestMerchByIdResponse);
 }
 
-message MerchRequestCreateModel {
+message RequestMerchRequest {
   int64 employee_id = 1;
   MerchType merch_type = 2;
 }
 
-message GetMerchRequestByEmployeeIdRequest {
+message GetRequestMerchByIdRequest {
   int64 employee_id = 1;
 }
 
-message GetMerchRequestByEmployeeIdResponse {
-  repeated GetMerchRequestByEmployeeIdResponseItem merch_requests = 1;
-}
-
-message GetMerchRequestByEmployeeIdResponseItem {
+message GetRequestMerchByIdResponse {
   string id = 1;
   int64 employee_id = 2;
   MerchType merch_type = 3;
