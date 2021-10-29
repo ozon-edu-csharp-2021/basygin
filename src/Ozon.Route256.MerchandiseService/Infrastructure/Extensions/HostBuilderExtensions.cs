@@ -6,7 +6,6 @@ using Microsoft.Extensions.DependencyInjection;
 using Microsoft.Extensions.Hosting;
 using Microsoft.OpenApi.Models;
 using Ozon.Route256.MerchandiseService.Infrastructure.Filters;
-using Ozon.Route256.MerchandiseService.Infrastructure.Interceptors;
 using Ozon.Route256.MerchandiseService.Infrastructure.StartupFilters;
 
 namespace Ozon.Route256.MerchandiseService.Infrastructure.Extensions
