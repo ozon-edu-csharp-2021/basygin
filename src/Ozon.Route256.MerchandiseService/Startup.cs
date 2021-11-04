@@ -3,6 +3,7 @@ using Microsoft.AspNetCore.Hosting;
 using Microsoft.Extensions.Configuration;
 using Microsoft.Extensions.DependencyInjection;
 using Ozon.Route256.MerchandiseService.GrpcServices;
+using Ozon.Route256.MerchandiseService.Infrastructure.Extensions;
 using Ozon.Route256.MerchandiseService.Infrastructure.Interceptors;
 
 namespace Ozon.Route256.MerchandiseService
@@ -21,6 +22,10 @@ namespace Ozon.Route256.MerchandiseService
             services.AddControllers();
 
             services.AddGrpc(options => options.Interceptors.Add<LoggingInterceptor>());
+
+            services.AddInfrastructureIntegrations();
+            services.AddInfrastructureServices();
+            services.AddInfrastructureRepositories();
         }
         
         public void Configure(IApplicationBuilder app, IWebHostEnvironment env)
