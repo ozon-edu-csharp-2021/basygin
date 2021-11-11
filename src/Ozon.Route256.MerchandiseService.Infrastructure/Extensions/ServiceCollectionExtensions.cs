@@ -1,10 +1,10 @@
 ﻿using MediatR;
 using Microsoft.Extensions.DependencyInjection;
 using Ozon.Route256.MerchandiseService.Domain.Repository;
+using Ozon.Route256.MerchandiseService.Infrastructure.FakeRepos;
 using Ozon.Route256.MerchandiseService.Infrastructure.Handlers;
 using Ozon.Route256.MerchandiseService.Infrastructure.Handlers.MerchRequestAggregate;
 using Ozon.Route256.MerchandiseService.Infrastructure.Integrations.StockApi;
-using Ozon.Route256.MerchandiseService.Infrastructure.Stubs;
 
 namespace Ozon.Route256.MerchandiseService.Infrastructure.Extensions
 {
@@ -24,8 +24,8 @@ namespace Ozon.Route256.MerchandiseService.Infrastructure.Extensions
             services.AddMediatR(typeof(GetMerchRequestCommandHandler).Assembly);
             services.AddMediatR(typeof(SupplyShippedEventHandler).Assembly);
 
-            services.AddMediatR(typeof(MerchRequestCreatedDomainEventHandler).Assembly);
-            services.AddMediatR(typeof(MerchRequestItemAddedDomainEventHandler).Assembly);
+            services.AddMediatR(typeof(MerchRequestStatusInWorkDomainEventHandler).Assembly);
+            services.AddMediatR(typeof(MerchRequestStatusWaitDomainEventHandler).Assembly);
             services.AddMediatR(typeof(MerchRequestStatusDoneDomainEventHandler).Assembly);
 
             return services;
@@ -38,10 +38,11 @@ namespace Ozon.Route256.MerchandiseService.Infrastructure.Extensions
         /// <returns>Объект <see cref="IServiceCollection"/></returns>
         public static IServiceCollection AddInfrastructureRepositories(this IServiceCollection services)
         {
+            // тут будут добавляться репозитории
+            
             services.AddScoped<IMerchRequestRepository, MerchRequestFakeRepository>();
-            services.AddScoped<IMerchPackItemRepository, MerchPackItemFakeRepository>();
-            services.AddScoped<IMerchRequestItemRepository, MerchRequestItemFakeRepository>();
-
+            services.AddScoped<IMerchPackItemRepository, MerchPackItemsFakeRepository>();
+            
             return services;
         }
 

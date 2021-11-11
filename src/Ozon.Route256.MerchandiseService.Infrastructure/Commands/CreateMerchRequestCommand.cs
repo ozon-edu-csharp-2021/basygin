@@ -1,8 +1,9 @@
 ﻿using MediatR;
+using Ozon.Route256.MerchandiseService.Domain.AggregateModels.MerchRequestAggregate;
 
-namespace Ozon.Route256.MerchandiseService.Infrastructure.Commands.CreateMerchRequest
+namespace Ozon.Route256.MerchandiseService.Infrastructure.Commands
 {
-    public class CreateMerchRequestCommand: IRequest<long>
+    public class CreateMerchRequestCommand: IRequest<MerchRequest>
     {
         /// <summary>
         /// Идентификатор сотрудника

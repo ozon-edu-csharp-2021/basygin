@@ -2,7 +2,7 @@
 using System.Collections.Generic;
 using Ozon.Route256.MerchandiseService.Domain.AggregateModels.ValueObjects;
 using Ozon.Route256.MerchandiseService.Domain.BaseModels;
-using Ozon.Route256.MerchandiseService.Domain.Exceptions.EmployeeAggregate;
+using Ozon.Route256.MerchandiseService.Domain.Exceptions.MerchRequestAggregate;
 
 namespace Ozon.Route256.MerchandiseService.Domain.AggregateModels.MerchRequestAggregate
 {

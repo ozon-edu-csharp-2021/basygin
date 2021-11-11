@@ -3,11 +3,11 @@ using Ozon.Route256.MerchandiseService.Domain.AggregateModels.MerchRequestAggreg
 
 namespace Ozon.Route256.MerchandiseService.Domain.Events
 {
-    public class MerchRequestCreatedDomainEvent : INotification
+    public class MerchRequestStatusWaitDomainEvent : INotification
     {
         public MerchRequest MerchRequest { get; }
         
-        public MerchRequestCreatedDomainEvent(MerchRequest merchRequest)
+        public MerchRequestStatusWaitDomainEvent(MerchRequest merchRequest)
         {
             MerchRequest = merchRequest;
         }

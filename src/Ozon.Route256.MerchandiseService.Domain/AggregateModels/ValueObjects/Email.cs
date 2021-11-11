@@ -1,7 +1,7 @@
 ﻿using System.Collections.Generic;
 using System.Net.Mail;
 using Ozon.Route256.MerchandiseService.Domain.BaseModels;
-using Ozon.Route256.MerchandiseService.Domain.Exceptions.EmployeeAggregate;
+using Ozon.Route256.MerchandiseService.Domain.Exceptions;
 
 namespace Ozon.Route256.MerchandiseService.Domain.AggregateModels.ValueObjects
 {

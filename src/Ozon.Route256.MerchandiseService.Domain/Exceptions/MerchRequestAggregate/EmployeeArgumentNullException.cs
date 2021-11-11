@@ -1,6 +1,6 @@
 ﻿using System;
 
-namespace Ozon.Route256.MerchandiseService.Domain.Exceptions.EmployeeAggregate
+namespace Ozon.Route256.MerchandiseService.Domain.Exceptions.MerchRequestAggregate
 {
     public class EmployeeArgumentNullException : Exception
     {

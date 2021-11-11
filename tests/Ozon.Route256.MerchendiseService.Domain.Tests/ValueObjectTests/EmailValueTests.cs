@@ -1,5 +1,5 @@
 ﻿using Ozon.Route256.MerchandiseService.Domain.AggregateModels.ValueObjects;
-using Ozon.Route256.MerchandiseService.Domain.Exceptions.EmployeeAggregate;
+using Ozon.Route256.MerchandiseService.Domain.Exceptions;
 using Ozon.Route256.MerchandiseService.Domain.Exceptions.MerchRequestAggregate;
 using Xunit;
 

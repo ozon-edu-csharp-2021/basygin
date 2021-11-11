@@ -3,7 +3,6 @@ using System.Threading;
 using System.Threading.Tasks;
 using Microsoft.AspNetCore.Mvc;
 using Ozon.Route256.MerchandiseService.HttpModels;
-using Ozon.Route256.MerchandiseService.Infrastructure.Commands.CreateMerchRequest;
 
 namespace Ozon.Route256.MerchandiseService.Controllers
 {

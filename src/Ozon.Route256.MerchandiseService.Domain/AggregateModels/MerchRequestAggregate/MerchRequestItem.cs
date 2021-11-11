@@ -8,16 +8,15 @@ namespace Ozon.Route256.MerchandiseService.Domain.AggregateModels.MerchRequestAg
 {
     public class MerchRequestItem : Entity
     {
-        public MerchRequestItem(Identifier merchRequestId, Sku sku, Quantity quantity)
+        public MerchRequestItem(Sku sku, Quantity quantity)
         {
-            MerchRequestId = merchRequestId ?? throw new MerchRequestItemArgumentNullException(nameof(merchRequestId));
             Sku = sku ?? throw new MerchRequestItemArgumentNullException(nameof(sku));
             Quantity = quantity ?? throw new MerchRequestItemArgumentNullException(nameof(quantity));
             IssuedQuantity = new IssuedQuantity(0);
         }
         
-        public MerchRequestItem(Identifier merchRequestId, Sku sku, Quantity quantity, IssuedQuantity issuedQuantity)
-        : this(merchRequestId, sku, quantity)
+        public MerchRequestItem(Sku sku, Quantity quantity, IssuedQuantity issuedQuantity)
+        : this(sku, quantity)
         {
             if (issuedQuantity == null)
             {
@@ -26,8 +25,6 @@ namespace Ozon.Route256.MerchandiseService.Domain.AggregateModels.MerchRequestAg
             
             SetIssuedQuantity(issuedQuantity);
         }
-
-        public Identifier MerchRequestId { get; }
         
         public Sku Sku { get; }
         public Quantity Quantity { get; private set; }

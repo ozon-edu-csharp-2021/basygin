@@ -10,44 +10,28 @@ namespace Ozon.Route256.MerchandiseService.Domain.AggregateModels.MerchRequestAg
     /// <summary>
     /// Запрос на выдачу мерча
     /// </summary>
-    public class MerchRequest : Entity
+    public class MerchRequest : Entity, IAggregateRoot
     {
         public MerchRequest(MerchRequestType type, Employee employee, DateTime createdAt)
         {
             Type = type ?? throw new MerchRequestItemArgumentNullException(nameof(type));
             Employee = employee ?? throw new MerchRequestItemArgumentNullException(nameof(employee));
             CreatedAt = createdAt;
-            Items = new List<MerchRequestItem>();
             
-            AddDomainEvent(new MerchRequestCreatedDomainEvent(this));
+            Items = new List<MerchRequestItem>();
+            Status = MerchRequestStatus.New;
         }
         
         public MerchRequestType Type { get; }
         public Employee Employee { get; }
 
-        public MerchRequestStatus Status
-        {
-            get
-            {
-                if (!Items.Any())
-                {
-                    return MerchRequestStatus.New;
-                }
-
-                if (Items.Exists(x => Equals(x.MerchRequestItemStatus, MerchRequestItemStatus.New)))
-                {
-                    return MerchRequestStatus.Wait;
-                }
-                
-                return MerchRequestStatus.Done;
-            }
-        }
+        public MerchRequestStatus Status { get; private set; }
 
         public DateTime CreatedAt { get; }
         public DateTime? IssuedAt { get; internal set; }
-        public List<MerchRequestItem> Items { get; internal set; }
+        public List<MerchRequestItem> Items { get; private set; }
 
-        public void SetIssued(DateTime issuedDate)
+        public void SetIssuedDate(DateTime issuedDate)
         {
             if (CreatedAt > issuedDate)
             {
@@ -68,13 +52,62 @@ namespace Ozon.Route256.MerchandiseService.Domain.AggregateModels.MerchRequestAg
             }
             
             Items.Add(merchRequestItem);
-            
-            AddDomainEvent(new MerchRequestItemAddedDomainEvent(merchRequestItem));
 
-            if (Equals(Status, MerchRequestStatus.Done))
+            if (!Items.Exists(x => x.Quantity.Value > x.IssuedQuantity.Value))
             {
-                AddDomainEvent(new MerchRequestStatusDoneDomainEvent(this));
+                SetStatusDone();
             }
+        }
+
+        public void SetStatusInWork()
+        {
+            if (!Status.Equals(MerchRequestStatus.New))
+            {
+                ThrowMerchRequestStatusException(MerchRequestStatus.InWork);
+            }
+            
+            Status = MerchRequestStatus.InWork;
+            
+            AddDomainEvent(new MerchRequestStatusInWorkDomainEvent(this));
+        }
+        
+        public void SetStatusWait()
+        {
+            if (!Status.Equals(MerchRequestStatus.InWork))
+            {
+                ThrowMerchRequestStatusException(MerchRequestStatus.Wait);
+            }
+
+            if (!Items.Exists(x => Equals(x.MerchRequestItemStatus, MerchRequestItemStatus.New)))
+            {
+                ThrowMerchRequestStatusException(MerchRequestStatus.Wait);
+            }
+            
+            Status = MerchRequestStatus.Wait;
+            
+            AddDomainEvent(new MerchRequestStatusWaitDomainEvent(this));
+        }
+        
+        public void SetStatusDone()
+        {
+            if (!Status.Equals(MerchRequestStatus.InWork))
+            {
+                ThrowMerchRequestStatusException(MerchRequestStatus.Done);
+            }
+            
+            if (Items.Exists(x => Equals(x.MerchRequestItemStatus, MerchRequestItemStatus.New)))
+            {
+                ThrowMerchRequestStatusException(MerchRequestStatus.Done);
+            }
+
+            Status = MerchRequestStatus.Done;
+            
+            AddDomainEvent(new MerchRequestStatusDoneDomainEvent(this));
+        }
+
+        private void ThrowMerchRequestStatusException(MerchRequestStatus statusToChange)
+        {
+            throw new MerchRequestWrongStatusException($"Is not possible to change the merch request status from {Status.Name} to {statusToChange.Name}.");
         }
     }
 }

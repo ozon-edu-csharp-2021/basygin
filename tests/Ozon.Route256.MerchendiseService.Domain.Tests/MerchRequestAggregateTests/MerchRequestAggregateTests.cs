@@ -37,16 +37,43 @@ namespace Ozon.Route256.MerchendiseService.Domain.Tests.MerchRequestAggregateTes
             //Act 
             var merchRequest = new MerchRequest(type, employee, createdAt);
             
+            merchRequest.SetStatusInWork();
+            
             merchRequest.AddItem(
                 new MerchRequestItem(
-                    new Identifier(123),
                     new Sku(1234),
                     new Quantity(2)
                 ));
+            
+            merchRequest.SetStatusWait();
 
             //Assert
             Assert.Single(merchRequest.Items);
             Assert.Equal(MerchRequestStatus.Wait, merchRequest.Status);
+        }
+        
+        [Fact]
+        public void CreateMerchRequestAndAddItemInWorkStatusToList()
+        {
+            //Arrange    
+            var type = MerchRequestType.WelcomePack;
+            var employee = new Employee( new Identifier(10), Size.L, new Email("email@email.com"));
+            var createdAt = DateTime.Now;
+
+            //Act 
+            var merchRequest = new MerchRequest(type, employee, createdAt);
+            
+            merchRequest.AddItem(
+                new MerchRequestItem(
+                    new Sku(1234),
+                    new Quantity(2)
+                ));
+            
+            merchRequest.SetStatusInWork();
+
+            //Assert
+            Assert.Single(merchRequest.Items);
+            Assert.Equal(MerchRequestStatus.InWork, merchRequest.Status);
         }
         
         [Fact]
@@ -60,13 +87,17 @@ namespace Ozon.Route256.MerchendiseService.Domain.Tests.MerchRequestAggregateTes
             //Act 
             var merchRequest = new MerchRequest(type, employee, createdAt);
             
+            merchRequest.SetStatusInWork();
+            
             merchRequest.AddItem(
                 new MerchRequestItem(
-                    new Identifier(123),
                     new Sku(1234),
-                    new Quantity(2),
-                    new IssuedQuantity(2)
+                    new Quantity(2)
                 ));
+            
+            merchRequest.Items[0].IncreaseIssuedQuantity(2);
+            
+            merchRequest.SetStatusDone();
 
             //Assert
             Assert.Single(merchRequest.Items);

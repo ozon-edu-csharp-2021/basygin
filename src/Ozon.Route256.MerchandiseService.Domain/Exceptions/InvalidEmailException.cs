@@ -1,7 +1,6 @@
 ﻿using System;
-using System.Runtime.Serialization;
 
-namespace Ozon.Route256.MerchandiseService.Domain.Exceptions.EmployeeAggregate
+namespace Ozon.Route256.MerchandiseService.Domain.Exceptions
 {
     public class InvalidEmailException : Exception
     {

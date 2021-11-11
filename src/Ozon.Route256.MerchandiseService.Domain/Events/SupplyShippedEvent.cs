@@ -1,9 +1,9 @@
 ﻿using System.Collections.Generic;
 using MediatR;
 
-namespace Ozon.Route256.MerchandiseService.Infrastructure.Commands.SupplyShip
+namespace Ozon.Route256.MerchandiseService.Domain.Events
 {
-    public class SupplyShipCommand : IRequest
+    public class SupplyShippedEvent : INotification
     {
         /// <summary>
         /// Идентификатор поставки.

@@ -8,13 +8,13 @@ using Ozon.Route256.MerchandiseService.Domain.AggregateModels.MerchRequestAggreg
 using Ozon.Route256.MerchandiseService.Domain.AggregateModels.ValueObjects;
 using Ozon.Route256.MerchandiseService.Domain.BaseModels;
 using Ozon.Route256.MerchandiseService.Domain.Repository;
-using Ozon.Route256.MerchandiseService.Infrastructure.Commands.CreateMerchRequest;
+using Ozon.Route256.MerchandiseService.Infrastructure.Commands;
 using Ozon.Route256.MerchandiseService.Infrastructure.Exceptions;
 using Ozon.Route256.MerchandiseService.Infrastructure.Integrations.StockApi;
 
 namespace Ozon.Route256.MerchandiseService.Infrastructure.Handlers.MerchRequestAggregate
 {
-    public class CreateMerchRequestCommandHandler : IRequestHandler<CreateMerchRequestCommand, long>
+    public class CreateMerchRequestCommandHandler : IRequestHandler<CreateMerchRequestCommand, MerchRequest>
     {
         private readonly IMerchPackItemRepository _merchItemRepository;
         private readonly IMerchRequestRepository _merchRequestRepository;
@@ -28,7 +28,7 @@ namespace Ozon.Route256.MerchandiseService.Infrastructure.Handlers.MerchRequestA
             _stockApi = stockApi;
         }
 
-        public async Task<long> Handle(CreateMerchRequestCommand request, CancellationToken cancellationToken)
+        public async Task<MerchRequest> Handle(CreateMerchRequestCommand request, CancellationToken cancellationToken)
         {
             var employee = new Employee(
                 new Identifier(request.EmployeeId),
@@ -56,34 +56,17 @@ namespace Ozon.Route256.MerchandiseService.Infrastructure.Handlers.MerchRequestA
 
             var merchRequest = new MerchRequest(requestType, employee, DateTime.Now);
 
-            var merchRequestId = await _merchRequestRepository.CreateMerchRequestAsync(merchRequest, cancellationToken);
-
             foreach (var item in merchPackItems)
             {
-                var availableQuantity = await _stockApi.GetAvailableQuantityAsync(item.Sku.Value, cancellationToken);
-
-                int quantityToGiveOut = 0;
-
-                if (availableQuantity > 0)
-                {
-                    quantityToGiveOut = availableQuantity >= item.Quantity.Value
-                        ? item.Quantity.Value
-                        : availableQuantity;
-
-                    await _stockApi.GiveOutItemAsync(new SkuItem()
-                    {
-                        Sku = item.Sku.Value,
-                        Quantity = quantityToGiveOut
-                    }, cancellationToken);
-                }
-
-                merchRequest.AddItem(new MerchRequestItem(new Identifier(merchRequest.Id), new Sku(item.Sku.Value),
-                    new Quantity(item.Quantity.Value), new IssuedQuantity(quantityToGiveOut)));
+                merchRequest.AddItem(new MerchRequestItem(new Sku(item.Sku.Value),
+                    new Quantity(item.Quantity.Value)));
             }
 
-            await _merchRequestRepository.AddMerchRequestItemsAsync(merchRequest.Items, cancellationToken);
+            merchRequest.SetStatusInWork();
+            
+            await _merchRequestRepository.UnitOfWork.SaveEntitiesAsync(cancellationToken);
 
-            return merchRequest.Id;
+            return merchRequest;
         }
     }
 }

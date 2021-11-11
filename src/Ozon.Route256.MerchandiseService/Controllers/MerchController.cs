@@ -5,7 +5,7 @@ using MediatR;
 using Microsoft.AspNetCore.Mvc;
 using Ozon.Route256.MerchandiseService.Domain.Exceptions.MerchRequestAggregate;
 using Ozon.Route256.MerchandiseService.HttpModels;
-using Ozon.Route256.MerchandiseService.Infrastructure.Commands.CreateMerchRequest;
+using Ozon.Route256.MerchandiseService.Infrastructure.Commands;
 using Ozon.Route256.MerchandiseService.Infrastructure.Exceptions;
 using Ozon.Route256.MerchandiseService.Infrastructure.Queries.MerchRequestAggregate;
 
@@ -24,7 +24,7 @@ namespace Ozon.Route256.MerchandiseService.Controllers
         }
 
         [HttpPost]
-        public async Task<IActionResult> MerchRequest(RequestMerchRequestModel merchRequest, CancellationToken cancellationToken)
+        public async Task<ActionResult<RequestMerchModel>> MerchRequest(RequestMerchRequestModel merchRequest, CancellationToken cancellationToken)
         {
             var command = new CreateMerchRequestCommand()
             {
@@ -37,7 +37,16 @@ namespace Ozon.Route256.MerchandiseService.Controllers
             try
             {
                 var result = await _mediator.Send(command, cancellationToken);
-                return Ok();
+
+                var resultModel = new RequestMerchModel()
+                {
+                    Id = result.Id,
+                    Status = (HttpModels.MerchRequestStatus) result.Status.Id,
+                    EmployeeId = result.Employee.Id.Value,
+                    MerchType = (HttpModels.MerchType) result.Type.Id
+                };
+                
+                return Ok(resultModel);
             }
             catch (MerchRequestAlreadyCreatedException _)
             {

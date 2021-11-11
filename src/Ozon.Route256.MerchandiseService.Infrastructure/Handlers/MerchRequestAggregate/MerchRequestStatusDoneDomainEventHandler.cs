@@ -1,4 +1,5 @@
-﻿using System.Threading;
+﻿using System;
+using System.Threading;
 using System.Threading.Tasks;
 using MediatR;
 using Ozon.Route256.MerchandiseService.Domain.Events;
@@ -15,9 +16,15 @@ namespace Ozon.Route256.MerchandiseService.Infrastructure.Handlers.MerchRequestA
             _merchRequestRepository = merchRequestRepository;
         }
         
-        public Task Handle(MerchRequestStatusDoneDomainEvent notification, CancellationToken cancellationToken)
+        public async Task Handle(MerchRequestStatusDoneDomainEvent notification, CancellationToken cancellationToken)
         {
-            return Task.CompletedTask;
+            // необходимо описать логику уведомления сотрудника о том что он может забрать свой мерчпак
+
+            var merchRequest = notification.MerchRequest;
+            
+            merchRequest.SetIssuedDate(DateTime.Now);
+
+            await _merchRequestRepository.UnitOfWork.SaveChangesAsync(cancellationToken);
         }
     }
 }
