@@ -1,7 +1,5 @@
-﻿using Ozon.Route256.MerchandiseService.Domain.AggregateModels.MerchRequestAggregate;
-using Ozon.Route256.MerchandiseService.Domain.AggregateModels.ValueObjects;
+﻿using Ozon.Route256.MerchandiseService.Domain.AggregateModels.ValueObjects;
 using Ozon.Route256.MerchandiseService.Domain.Exceptions;
-using Ozon.Route256.MerchandiseService.Domain.Exceptions.MerchRequestAggregate;
 using Xunit;
 
 namespace Ozon.Route256.MerchendiseService.Domain.Tests.MerchRequestAggregateTests

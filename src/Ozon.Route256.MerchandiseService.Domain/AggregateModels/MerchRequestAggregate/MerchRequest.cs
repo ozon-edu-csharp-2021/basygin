@@ -1,6 +1,7 @@
 ﻿using System;
 using System.Collections.Generic;
 using System.Linq;
+using Ozon.Route256.MerchandiseService.Domain.AggregateModels.EmployeeAggregate;
 using Ozon.Route256.MerchandiseService.Domain.BaseModels;
 using Ozon.Route256.MerchandiseService.Domain.Events;
 using Ozon.Route256.MerchandiseService.Domain.Exceptions.MerchRequestAggregate;
@@ -14,7 +15,7 @@ namespace Ozon.Route256.MerchandiseService.Domain.AggregateModels.MerchRequestAg
     {
         public MerchRequest(MerchRequestType type, Employee employee, DateTime createdAt)
         {
-            Type = type ?? throw new MerchRequestItemArgumentNullException(nameof(type));
+            Type = type;
             Employee = employee ?? throw new MerchRequestItemArgumentNullException(nameof(employee));
             CreatedAt = createdAt;
             
@@ -38,11 +39,24 @@ namespace Ozon.Route256.MerchandiseService.Domain.AggregateModels.MerchRequestAg
                 throw new MerchRequestIssuedDateException("Issued date is less then created date");
             }
 
+            if (!Equals(Status, MerchRequestStatus.Done))
+            {
+                throw new MerchRequestWrongStatusException($"Unable to set issued date for merch request in status {Status.Name}");
+            }
+
+            AddItem(null);
+            
             IssuedAt = issuedDate;
         }
 
         public void AddItem(MerchRequestItem merchRequestItem)
         {
+            if (!Equals(Status, MerchRequestStatus.InWork))
+            {
+                throw new MerchRequestWrongStatusException(
+                    $"Unable to add new item for merch request in status {Status.Name}");
+            }
+            
             if (merchRequestItem == null) throw new MerchRequestItemArgumentNullException(nameof(merchRequestItem));
             
             if (Items.Exists(x => x.Sku == merchRequestItem.Sku))
@@ -52,11 +66,6 @@ namespace Ozon.Route256.MerchandiseService.Domain.AggregateModels.MerchRequestAg
             }
             
             Items.Add(merchRequestItem);
-
-            if (!Items.Exists(x => x.Quantity.Value > x.IssuedQuantity.Value))
-            {
-                SetStatusDone();
-            }
         }
 
         public void SetStatusInWork()

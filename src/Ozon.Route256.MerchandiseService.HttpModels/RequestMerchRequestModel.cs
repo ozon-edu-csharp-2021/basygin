@@ -2,7 +2,7 @@
 {
     public class RequestMerchRequestModel
     {
-        public long EmployeeId { get; set; }
+        public int EmployeeId { get; set; }
         
         public string Email { get; set; }
         

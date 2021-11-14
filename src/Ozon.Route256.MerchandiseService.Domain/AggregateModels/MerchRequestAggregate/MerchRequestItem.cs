@@ -46,8 +46,8 @@ namespace Ozon.Route256.MerchandiseService.Domain.AggregateModels.MerchRequestAg
 
         public void UpdateRequiredQuantity(int newQuantityValue)
         {
-            if (newQuantityValue < 0)
-                throw new InvalidQuantityException($"{nameof(newQuantityValue)} value is negative");
+            if (newQuantityValue <= 0)
+                throw new InvalidQuantityException($"{nameof(newQuantityValue)} value is less or equal to zero");
             Quantity = new Quantity(newQuantityValue);
         }
         

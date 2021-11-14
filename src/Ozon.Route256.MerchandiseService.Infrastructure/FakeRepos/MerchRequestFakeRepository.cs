@@ -1,5 +1,4 @@
-﻿using System.Collections.Generic;
-using System.Threading;
+﻿using System.Threading;
 using System.Threading.Tasks;
 using Ozon.Route256.MerchandiseService.Domain.AggregateModels.MerchRequestAggregate;
 using Ozon.Route256.MerchandiseService.Domain.AggregateModels.ValueObjects;
@@ -12,12 +11,12 @@ namespace Ozon.Route256.MerchandiseService.Infrastructure.FakeRepos
     {
         public IUnitOfWork UnitOfWork { get; }
         
-        public Task<MerchRequest> GetMerchRequestByIdAsync(Identifier id, CancellationToken token)
+        public Task<MerchRequest> GetMerchRequestByIdAsync(long id, CancellationToken token)
         {
             throw new System.NotImplementedException();
         }
 
-        public Task<MerchRequest> GetMerchRequestByEmployeeIdAndMerchTypeAsync(Identifier employeeId, MerchRequestType merchType,
+        public Task<MerchRequest> GetMerchRequestByEmployeeIdAndMerchTypeAsync(long employeeId, MerchRequestType merchType,
             CancellationToken token)
         {
             throw new System.NotImplementedException();

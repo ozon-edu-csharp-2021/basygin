@@ -8,7 +8,7 @@ namespace Ozon.Route256.MerchandiseService.Infrastructure.Commands
         /// <summary>
         /// Идентификатор сотрудника
         /// </summary>
-        public long EmployeeId { get; set; }
+        public int EmployeeId { get; set; }
         
         /// <summary>
         /// Email сотрудника

@@ -4,6 +4,7 @@ using System.Linq;
 using System.Threading;
 using System.Threading.Tasks;
 using MediatR;
+using Ozon.Route256.MerchandiseService.Domain.AggregateModels.EmployeeAggregate;
 using Ozon.Route256.MerchandiseService.Domain.AggregateModels.MerchRequestAggregate;
 using Ozon.Route256.MerchandiseService.Domain.AggregateModels.ValueObjects;
 using Ozon.Route256.MerchandiseService.Domain.BaseModels;
@@ -31,40 +32,45 @@ namespace Ozon.Route256.MerchandiseService.Infrastructure.Handlers.MerchRequestA
         public async Task<MerchRequest> Handle(CreateMerchRequestCommand request, CancellationToken cancellationToken)
         {
             var employee = new Employee(
-                new Identifier(request.EmployeeId),
+                request.EmployeeId,
                 Enumeration.GetAll<Size>().FirstOrDefault(it => it.Id.Equals(request.Size)),
                 new Email(request.Email));
 
             var requestType = Enumeration.GetAll<MerchRequestType>()
                 .FirstOrDefault(it => it.Id.Equals(request.MerchType));
-
-            // проверяем выдавался ли ранее данный мерчпак сотруднику
-            var exitstingMerchRequest =
+            
+            var existingMerchRequest =
                 await _merchRequestRepository.GetMerchRequestByEmployeeIdAndMerchTypeAsync(employee.Id, requestType,
                     cancellationToken);
 
-            if (exitstingMerchRequest is not null)
+            if (existingMerchRequest is not null)
             {
                 throw new MerchRequestAlreadyCreatedException(
-                    $"Merch request is with type {exitstingMerchRequest.Type} for employee with id {exitstingMerchRequest.Employee.Id} already created");
+                    $"Merch request is with type {existingMerchRequest.Type} for employee with id {existingMerchRequest.Employee.Id} already created");
             }
 
-            // собираем набор мерча
+            var merchRequest = await CreateAndFillMerchRequest(requestType, employee, cancellationToken);
+
+            merchRequest.SetStatusInWork();
+            
+            await _merchRequestRepository.UnitOfWork.SaveEntitiesAsync(cancellationToken);
+
+            return merchRequest;
+        }
+
+        private async Task<MerchRequest> CreateAndFillMerchRequest(MerchRequestType merchRequestType, Employee employee, CancellationToken cancellationToken)
+        {
+            var merchRequest = new MerchRequest(merchRequestType, employee, DateTime.Now);
+
             var merchPackItems =
-                await _merchItemRepository.CollectItemsByMerchRequestTypeAndSizeAsync(requestType, employee.Size,
+                await _merchItemRepository.CollectItemsByMerchRequestTypeAndSizeAsync(merchRequestType, employee.Size,
                     cancellationToken);
-
-            var merchRequest = new MerchRequest(requestType, employee, DateTime.Now);
-
+            
             foreach (var item in merchPackItems)
             {
                 merchRequest.AddItem(new MerchRequestItem(new Sku(item.Sku.Value),
                     new Quantity(item.Quantity.Value)));
             }
-
-            merchRequest.SetStatusInWork();
-            
-            await _merchRequestRepository.UnitOfWork.SaveEntitiesAsync(cancellationToken);
 
             return merchRequest;
         }

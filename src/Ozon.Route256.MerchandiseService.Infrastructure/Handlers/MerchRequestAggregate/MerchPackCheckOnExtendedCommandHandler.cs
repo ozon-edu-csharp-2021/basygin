@@ -7,7 +7,6 @@ using Ozon.Route256.MerchandiseService.Domain.AggregateModels.ValueObjects;
 using Ozon.Route256.MerchandiseService.Domain.Repository;
 using Ozon.Route256.MerchandiseService.Infrastructure.Commands;
 using Ozon.Route256.MerchandiseService.Infrastructure.Integrations.StockApi;
-using Ozon.Route256.MerchandiseService.Infrastructure.Queries.MerchRequestAggregate;
 
 namespace Ozon.Route256.MerchandiseService.Infrastructure.Handlers.MerchRequestAggregate
 {

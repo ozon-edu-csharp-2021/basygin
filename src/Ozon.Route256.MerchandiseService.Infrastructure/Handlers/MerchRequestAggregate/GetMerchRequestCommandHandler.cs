@@ -1,9 +1,7 @@
-﻿using System.Linq;
-using System.Threading;
+﻿using System.Threading;
 using System.Threading.Tasks;
 using MediatR;
 using Ozon.Route256.MerchandiseService.Domain.AggregateModels.MerchRequestAggregate;
-using Ozon.Route256.MerchandiseService.Domain.AggregateModels.ValueObjects;
 using Ozon.Route256.MerchandiseService.Domain.Repository;
 using Ozon.Route256.MerchandiseService.Infrastructure.Commands;
 using Ozon.Route256.MerchandiseService.Infrastructure.Integrations.StockApi;
@@ -30,7 +28,7 @@ namespace Ozon.Route256.MerchandiseService.Infrastructure.Handlers.MerchRequestA
         public async Task<MerchRequest> Handle(GetMerchRequestQuery request, CancellationToken cancellationToken)
         {
             var merchRequest =
-                await _merchRequestRepository.GetMerchRequestByIdAsync(new Identifier(request.MerchRequestId), cancellationToken);
+                await _merchRequestRepository.GetMerchRequestByIdAsync(request.MerchRequestId, cancellationToken);
 
             if (merchRequest is null)
             {

@@ -1,4 +1,4 @@
-﻿using Ozon.Route256.MerchandiseService.Domain.AggregateModels.MerchRequestAggregate;
+﻿using Ozon.Route256.MerchandiseService.Domain.AggregateModels.EmployeeAggregate;
 using Ozon.Route256.MerchandiseService.Domain.AggregateModels.ValueObjects;
 using Ozon.Route256.MerchandiseService.Domain.Exceptions.MerchRequestAggregate;
 using Xunit;
@@ -10,56 +10,42 @@ namespace Ozon.Route256.MerchendiseService.Domain.Tests.MerchRequestAggregateTes
         [Fact]
         public void CreateEmployeeSuccess()
         {
-            //Arrange    
-            var id = new Identifier(1);
+            //Arrange
+            var employeeId = 10;
             var size = Size.L;
             var email = new Email("email@email.com");
 
             //Act 
-            var employee = new Employee(id, size, email);
+            var employee = new Employee(employeeId, size, email);
 
             //Assert
             Assert.NotNull(employee);
-            
-        }
-        
-        [Fact]
-        public void CreateEmployeeWithNullIdentifier()
-        {
-            //Arrange    
-            Identifier id = null;
-            var size = Size.L;
-            var email = new Email("email@email.com");
-
-            //Assert
-            Assert.Throws<EmployeeArgumentNullException>(() =>
-                new Employee(id, size, email));
         }
         
         [Fact]
         public void CreateEmployeeWithNullSize()
         {
-            //Arrange    
-            var id = new Identifier(1);
+            //Arrange
+            var employeeId = 10;
             Size size = null;
             var email = new Email("email@email.com");
 
             //Assert
             Assert.Throws<EmployeeArgumentNullException>(() =>
-                new Employee(id, size, email));
+                new Employee(employeeId, size, email));
         }
         
         [Fact]
         public void CreateEmployeeWithNullEmail()
         {
-            //Arrange    
-            var id = new Identifier(1);
+            //Arrange
+            var employeeId = 10;
             var size = Size.L;
             Email email = null;
 
             //Assert
             Assert.Throws<EmployeeArgumentNullException>(() =>
-                new Employee(id, size, email));
+                new Employee(employeeId, size, email));
         }
     }
 }

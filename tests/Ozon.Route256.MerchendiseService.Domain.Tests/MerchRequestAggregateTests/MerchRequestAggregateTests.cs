@@ -1,4 +1,5 @@
 ﻿using System;
+using Ozon.Route256.MerchandiseService.Domain.AggregateModels.EmployeeAggregate;
 using Ozon.Route256.MerchandiseService.Domain.AggregateModels.MerchRequestAggregate;
 using Ozon.Route256.MerchandiseService.Domain.AggregateModels.ValueObjects;
 using Ozon.Route256.MerchandiseService.Domain.Exceptions.MerchRequestAggregate;
@@ -13,7 +14,7 @@ namespace Ozon.Route256.MerchendiseService.Domain.Tests.MerchRequestAggregateTes
         {
             //Arrange    
             var type = MerchRequestType.WelcomePack;
-            var employee = new Employee( new Identifier(10), Size.L, new Email("email@email.com"));
+            var employee = new Employee(10, Size.L, new Email("email@email.com"));
             var createdAt = DateTime.Now;
 
             //Act 
@@ -31,7 +32,7 @@ namespace Ozon.Route256.MerchendiseService.Domain.Tests.MerchRequestAggregateTes
         {
             //Arrange    
             var type = MerchRequestType.WelcomePack;
-            var employee = new Employee( new Identifier(10), Size.L, new Email("email@email.com"));
+            var employee = new Employee(10, Size.L, new Email("email@email.com"));
             var createdAt = DateTime.Now;
 
             //Act 
@@ -57,7 +58,7 @@ namespace Ozon.Route256.MerchendiseService.Domain.Tests.MerchRequestAggregateTes
         {
             //Arrange    
             var type = MerchRequestType.WelcomePack;
-            var employee = new Employee( new Identifier(10), Size.L, new Email("email@email.com"));
+            var employee = new Employee(10,Size.L, new Email("email@email.com"));
             var createdAt = DateTime.Now;
 
             //Act 
@@ -81,7 +82,7 @@ namespace Ozon.Route256.MerchendiseService.Domain.Tests.MerchRequestAggregateTes
         {
             //Arrange    
             var type = MerchRequestType.WelcomePack;
-            var employee = new Employee( new Identifier(10), Size.L, new Email("email@email.com"));
+            var employee = new Employee(10,Size.L, new Email("email@email.com"));
             var createdAt = DateTime.Now;
 
             //Act 
@@ -109,7 +110,7 @@ namespace Ozon.Route256.MerchendiseService.Domain.Tests.MerchRequestAggregateTes
         {
             //Arrange    
             var type = MerchRequestType.WelcomePack;
-            var employee = new Employee( new Identifier(10), Size.L, new Email("email@email.com"));
+            var employee = new Employee(10,Size.L, new Email("email@email.com"));
             var createdAt = DateTime.Now;
 
             //Act 
@@ -124,7 +125,7 @@ namespace Ozon.Route256.MerchendiseService.Domain.Tests.MerchRequestAggregateTes
         {
             //Arrange    
             MerchRequestType type = null;
-            var employee = new Employee( new Identifier(10), Size.L, new Email("email@email.com"));
+            var employee = new Employee(10,Size.L, new Email("email@email.com"));
             var createdAt = DateTime.Now;
 
             //Assert

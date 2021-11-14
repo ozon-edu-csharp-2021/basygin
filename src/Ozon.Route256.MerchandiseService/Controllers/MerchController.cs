@@ -42,15 +42,19 @@ namespace Ozon.Route256.MerchandiseService.Controllers
                 {
                     Id = result.Id,
                     Status = (HttpModels.MerchRequestStatus) result.Status.Id,
-                    EmployeeId = result.Employee.Id.Value,
+                    EmployeeId = result.Employee.Id,
                     MerchType = (HttpModels.MerchType) result.Type.Id
                 };
                 
                 return Ok(resultModel);
             }
-            catch (MerchRequestAlreadyCreatedException _)
+            catch (MerchRequestAlreadyCreatedException ex)
             {
-                return Conflict();
+                return Conflict(
+                    new
+                    {
+                        error = ex.Message
+                    });
             }
         }
         
@@ -73,7 +77,7 @@ namespace Ozon.Route256.MerchandiseService.Controllers
             {
                 Id = result.Id,
                 Status = (HttpModels.MerchRequestStatus) result.Status.Id,
-                EmployeeId = result.Employee.Id.Value,
+                EmployeeId = result.Employee.Id,
                 MerchType = (HttpModels.MerchType) result.Type.Id
             };
 
