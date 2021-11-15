@@ -16,9 +16,10 @@ namespace Ozon.Route256.MerchandiseService.GrpcServices
         {
             return Task.FromResult(new GetRequestMerchByIdResponse()
             {
-                Id = Guid.NewGuid().ToString(),
+                Id = 1234,
                 EmployeeId = 123,
-                MerchType = MerchType.VeteranPack
+                MerchType = MerchType.VeteranPack,
+                MerchRequestStatus = MerchRequestStatus.Done
             });
         }
     }

@@ -14,16 +14,19 @@ service MerchandiseService {
 message RequestMerchRequest {
   int64 employee_id = 1;
   MerchType merch_type = 2;
+  string email = 3;
+  int32 size = 4;
 }
 
 message GetRequestMerchByIdRequest {
-  int64 employee_id = 1;
+  int64 merch_request_id = 1;
 }
 
 message GetRequestMerchByIdResponse {
-  string id = 1;
+  int64 id = 1;
   int64 employee_id = 2;
   MerchType merch_type = 3;
+  MerchRequestStatus merch_request_status = 4;
 }
 
 enum MerchType
@@ -34,4 +37,12 @@ enum MerchType
   ConferenceSpeakerPack = 30;
   ProbationPeriodEndingPack = 40;
   VeteranPack = 50;
+}
+
+enum MerchRequestStatus
+{
+  NoneStatus = 0;
+  New = 1;
+  Wait = 2;
+  Done = 3;
 }
