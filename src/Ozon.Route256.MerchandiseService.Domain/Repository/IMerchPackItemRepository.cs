@@ -9,6 +9,6 @@ namespace Ozon.Route256.MerchandiseService.Domain.Repository
 {
     public interface IMerchPackItemRepository
     {
-        Task<List<MerchPackItem>> CollectItemsByMerchRequestTypeAndSizeAsync(MerchRequestType merchType, Size size, CancellationToken token);
+        Task<IEnumerable<MerchPackItem>> CollectItemsByMerchRequestTypeAndSizeAsync(MerchRequestType merchType, Size size, CancellationToken token);
     }
 }

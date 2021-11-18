@@ -9,7 +9,7 @@ namespace Ozon.Route256.MerchandiseService.Infrastructure.FakeRepos
 {
     public class MerchPackItemsFakeRepository : IMerchPackItemRepository
     {
-        public Task<List<MerchPackItem>> CollectItemsByMerchRequestTypeAndSizeAsync(MerchRequestType merchType, Size size, CancellationToken token)
+        public Task<IEnumerable<MerchPackItem>> CollectItemsByMerchRequestTypeAndSizeAsync(MerchRequestType merchType, Size size, CancellationToken token)
         {
             throw new System.NotImplementedException();
         }

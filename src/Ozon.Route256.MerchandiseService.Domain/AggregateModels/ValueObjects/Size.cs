@@ -1,4 +1,5 @@
-﻿using System.Linq;
+﻿using System;
+using System.Linq;
 using Ozon.Route256.MerchandiseService.Domain.BaseModels;
 using Ozon.Route256.MerchandiseService.Domain.Exceptions;
 
@@ -15,6 +16,20 @@ namespace Ozon.Route256.MerchandiseService.Domain.AggregateModels.ValueObjects
         
         public Size(int id, string name) : base(id, name)
         {
+        }
+
+        public static Size Parse(int size)
+        {
+            return size switch
+            {
+                1 => XS,
+                2 => S,
+                3 => M,
+                4 => L,
+                5 => XL,
+                6 => XXL,
+                _ => throw new InvalidSizeException($"Invalid MerchRequestType with id = {size}"),
+            };
         }
     }
 }

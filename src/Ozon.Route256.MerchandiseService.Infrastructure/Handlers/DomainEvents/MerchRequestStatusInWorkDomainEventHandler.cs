@@ -40,7 +40,7 @@ namespace Ozon.Route256.MerchandiseService.Infrastructure.Handlers.DomainEvents
                 merchRequest.SetStatusWait();
             }
             
-            await _merchRequestRepository.UnitOfWork.SaveEntitiesAsync(cancellationToken);
+            await _merchRequestRepository.UnitOfWork.SaveChangesAsync(cancellationToken);
         }
 
         private async Task IssueMerchRequestItem(MerchRequestItem merchRequestItem, CancellationToken cancellationToken)

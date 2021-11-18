@@ -19,14 +19,14 @@ namespace Ozon.Route256.MerchandiseService.Infrastructure.Handlers.MerchRequestA
     {
         private readonly IMerchPackItemRepository _merchItemRepository;
         private readonly IMerchRequestRepository _merchRequestRepository;
-        private readonly IStockApi _stockApi;
+        private readonly IUnitOfWork _unitOfWork;
 
         public CreateMerchRequestCommandHandler(IMerchPackItemRepository merchItemRepository,
-            IMerchRequestRepository merchRequestRepository, IStockApi stockApi)
+            IMerchRequestRepository merchRequestRepository, IUnitOfWork unitOfWork)
         {
             _merchItemRepository = merchItemRepository;
             _merchRequestRepository = merchRequestRepository;
-            _stockApi = stockApi;
+            _unitOfWork = unitOfWork;
         }
 
         public async Task<MerchRequest> Handle(CreateMerchRequestCommand request, CancellationToken cancellationToken)
@@ -52,8 +52,9 @@ namespace Ozon.Route256.MerchandiseService.Infrastructure.Handlers.MerchRequestA
             var merchRequest = await CreateAndFillMerchRequest(requestType, employee, cancellationToken);
 
             merchRequest.SetStatusInWork();
-            
-            await _merchRequestRepository.UnitOfWork.SaveEntitiesAsync(cancellationToken);
+
+            var createResult = await _merchRequestRepository.CreateMerchRequestAsync(merchRequest, cancellationToken);
+            await _unitOfWork.SaveChangesAsync(cancellationToken);
 
             return merchRequest;
         }

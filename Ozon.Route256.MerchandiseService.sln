@@ -10,23 +10,25 @@ EndProject
 Project("{2150E333-8FDC-42A3-9474-1A3956D46DE8}") = "common", "common", "{8E92C24D-4B24-46BD-B88F-DFA8504DD15E}"
 	ProjectSection(SolutionItems) = preProject
 		.gitignore = .gitignore
-		README.md = README.md
 		Dockerfile = Dockerfile
+		README.md = README.md
 	EndProjectSection
 EndProject
 Project("{2150E333-8FDC-42A3-9474-1A3956D46DE8}") = "tests", "tests", "{087FE1D7-905E-4FA3-A565-8697AA393E79}"
 EndProject
-Project("{FAE04EC0-301F-11D3-BF4B-00C04F79EFBC}") = "Ozon.Route256.MerchandiseService.HttpClients", "src\Ozon.Route256.MerchandiseService.HttpClients\Ozon.Route256.MerchandiseService.HttpClients.csproj", "{55B06576-F95B-4132-9E81-892BF0950DD9}"
+Project("{9A19103F-16F7-4668-BE54-9A1E7A4F7556}") = "Ozon.Route256.MerchandiseService.HttpClients", "src\Ozon.Route256.MerchandiseService.HttpClients\Ozon.Route256.MerchandiseService.HttpClients.csproj", "{55B06576-F95B-4132-9E81-892BF0950DD9}"
 EndProject
-Project("{FAE04EC0-301F-11D3-BF4B-00C04F79EFBC}") = "Ozon.Route256.MerchandiseService.HttpModels", "src\Ozon.Route256.MerchandiseService.HttpModels\Ozon.Route256.MerchandiseService.HttpModels.csproj", "{0DC05B69-C2A9-441E-9784-7463AE66F592}"
+Project("{9A19103F-16F7-4668-BE54-9A1E7A4F7556}") = "Ozon.Route256.MerchandiseService.HttpModels", "src\Ozon.Route256.MerchandiseService.HttpModels\Ozon.Route256.MerchandiseService.HttpModels.csproj", "{0DC05B69-C2A9-441E-9784-7463AE66F592}"
 EndProject
-Project("{FAE04EC0-301F-11D3-BF4B-00C04F79EFBC}") = "Ozon.Route256.MerchandiseService.Grpc", "src\Ozon.Route256.MerchandiseService.Grpc\Ozon.Route256.MerchandiseService.Grpc.csproj", "{89B9127D-D8F5-4EF2-BF71-CBABB21B0123}"
+Project("{9A19103F-16F7-4668-BE54-9A1E7A4F7556}") = "Ozon.Route256.MerchandiseService.Grpc", "src\Ozon.Route256.MerchandiseService.Grpc\Ozon.Route256.MerchandiseService.Grpc.csproj", "{89B9127D-D8F5-4EF2-BF71-CBABB21B0123}"
 EndProject
-Project("{FAE04EC0-301F-11D3-BF4B-00C04F79EFBC}") = "Ozon.Route256.MerchandiseService.Domain", "src\Ozon.Route256.MerchandiseService.Domain\Ozon.Route256.MerchandiseService.Domain.csproj", "{93361AFE-C61E-4232-98AC-CFCFD28CA70E}"
+Project("{9A19103F-16F7-4668-BE54-9A1E7A4F7556}") = "Ozon.Route256.MerchandiseService.Domain", "src\Ozon.Route256.MerchandiseService.Domain\Ozon.Route256.MerchandiseService.Domain.csproj", "{93361AFE-C61E-4232-98AC-CFCFD28CA70E}"
 EndProject
-Project("{FAE04EC0-301F-11D3-BF4B-00C04F79EFBC}") = "Ozon.Route256.MerchandiseService.Infrastructure", "src\Ozon.Route256.MerchandiseService.Infrastructure\Ozon.Route256.MerchandiseService.Infrastructure.csproj", "{FD8A8367-98BB-4893-80BB-2DEF422C93A7}"
+Project("{9A19103F-16F7-4668-BE54-9A1E7A4F7556}") = "Ozon.Route256.MerchandiseService.Infrastructure", "src\Ozon.Route256.MerchandiseService.Infrastructure\Ozon.Route256.MerchandiseService.Infrastructure.csproj", "{FD8A8367-98BB-4893-80BB-2DEF422C93A7}"
 EndProject
-Project("{FAE04EC0-301F-11D3-BF4B-00C04F79EFBC}") = "Ozon.Route256.MerchendiseService.Domain.Tests", "tests\Ozon.Route256.MerchendiseService.Domain.Tests\Ozon.Route256.MerchendiseService.Domain.Tests.csproj", "{734A0DE7-9236-44AB-95BE-AF62EF912305}"
+Project("{9A19103F-16F7-4668-BE54-9A1E7A4F7556}") = "Ozon.Route256.MerchendiseService.Domain.Tests", "tests\Ozon.Route256.MerchendiseService.Domain.Tests\Ozon.Route256.MerchendiseService.Domain.Tests.csproj", "{734A0DE7-9236-44AB-95BE-AF62EF912305}"
+EndProject
+Project("{FAE04EC0-301F-11D3-BF4B-00C04F79EFBC}") = "Ozon.Route256.MerchandiseService.Migrator", "src\Ozon.Route256.MerchandiseService.Migrator\Ozon.Route256.MerchandiseService.Migrator.csproj", "{7A5D095A-D6BC-4D1A-A980-C11F146D7C4F}"
 EndProject
 Global
 	GlobalSection(SolutionConfigurationPlatforms) = preSolution
@@ -62,6 +64,10 @@ Global
 		{734A0DE7-9236-44AB-95BE-AF62EF912305}.Debug|Any CPU.Build.0 = Debug|Any CPU
 		{734A0DE7-9236-44AB-95BE-AF62EF912305}.Release|Any CPU.ActiveCfg = Release|Any CPU
 		{734A0DE7-9236-44AB-95BE-AF62EF912305}.Release|Any CPU.Build.0 = Release|Any CPU
+		{7A5D095A-D6BC-4D1A-A980-C11F146D7C4F}.Debug|Any CPU.ActiveCfg = Debug|Any CPU
+		{7A5D095A-D6BC-4D1A-A980-C11F146D7C4F}.Debug|Any CPU.Build.0 = Debug|Any CPU
+		{7A5D095A-D6BC-4D1A-A980-C11F146D7C4F}.Release|Any CPU.ActiveCfg = Release|Any CPU
+		{7A5D095A-D6BC-4D1A-A980-C11F146D7C4F}.Release|Any CPU.Build.0 = Release|Any CPU
 	EndGlobalSection
 	GlobalSection(SolutionProperties) = preSolution
 		HideSolutionNode = FALSE
@@ -74,6 +80,7 @@ Global
 		{93361AFE-C61E-4232-98AC-CFCFD28CA70E} = {70FF77FE-E373-4615-8B14-CA7C39C732A0}
 		{FD8A8367-98BB-4893-80BB-2DEF422C93A7} = {70FF77FE-E373-4615-8B14-CA7C39C732A0}
 		{734A0DE7-9236-44AB-95BE-AF62EF912305} = {087FE1D7-905E-4FA3-A565-8697AA393E79}
+		{7A5D095A-D6BC-4D1A-A980-C11F146D7C4F} = {70FF77FE-E373-4615-8B14-CA7C39C732A0}
 	EndGlobalSection
 	GlobalSection(ExtensibilityGlobals) = postSolution
 		SolutionGuid = {01FC03C4-75D7-4FE7-97C3-5F832847A344}

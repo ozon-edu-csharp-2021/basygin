@@ -8,22 +8,15 @@ namespace Ozon.Route256.MerchandiseService.Domain.AggregateModels.MerchRequestAg
 {
     public class MerchRequestItem : Entity
     {
-        public MerchRequestItem(Sku sku, Quantity quantity)
+        public MerchRequestItem(Sku sku, Quantity quantity, IssuedQuantity? issuedQuantity = null)
         {
             Sku = sku ?? throw new MerchRequestItemArgumentNullException(nameof(sku));
             Quantity = quantity ?? throw new MerchRequestItemArgumentNullException(nameof(quantity));
-            IssuedQuantity = new IssuedQuantity(0);
-        }
-        
-        public MerchRequestItem(Sku sku, Quantity quantity, IssuedQuantity issuedQuantity)
-        : this(sku, quantity)
-        {
-            if (issuedQuantity == null)
+
+            if (issuedQuantity != null)
             {
-                throw new MerchRequestItemArgumentNullException(nameof(issuedQuantity));
+                SetIssuedQuantity(issuedQuantity);
             }
-            
-            SetIssuedQuantity(issuedQuantity);
         }
         
         public Sku Sku { get; }

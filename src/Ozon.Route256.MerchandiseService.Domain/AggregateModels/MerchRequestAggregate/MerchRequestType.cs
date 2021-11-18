@@ -1,4 +1,5 @@
 ﻿using Ozon.Route256.MerchandiseService.Domain.BaseModels;
+using Ozon.Route256.MerchandiseService.Domain.Exceptions.MerchRequestAggregate;
 
 namespace Ozon.Route256.MerchandiseService.Domain.AggregateModels.MerchRequestAggregate
 {
@@ -13,6 +14,19 @@ namespace Ozon.Route256.MerchandiseService.Domain.AggregateModels.MerchRequestAg
         
         public MerchRequestType(int id, string name) : base(id, name)
         {
+        }
+
+        public static MerchRequestType Parse(int type)
+        {
+            return type switch
+            {
+                10 => WelcomePack,
+                20 => ConferenceListenerPack,
+                30 => ConferenceSpeakerPack,
+                40 => ConferenceSpeakerPack,
+                50 => VeteranPack,
+                _ => throw new InvalidMerchTypeException($"Invalid MerchRequestType with id = {type}"),
+            };
         }
     }
 }
