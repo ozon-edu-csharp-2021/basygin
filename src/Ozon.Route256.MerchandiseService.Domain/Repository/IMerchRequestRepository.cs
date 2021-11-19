@@ -16,5 +16,7 @@ namespace Ozon.Route256.MerchandiseService.Domain.Repository
         Task<MerchRequest> GetMerchRequestByEmployeeIdAndMerchTypeAsync(long employeeId, MerchRequestType merchType, CancellationToken token);
         
         Task<MerchRequest> GetMerchRequestAwaitsSupplyBySkuOrderByCreatedAsync(Sku sku, CancellationToken cancellationToken);
+
+        Task Update(MerchRequest merchRequest, CancellationToken cancellationToken);
     }
 }

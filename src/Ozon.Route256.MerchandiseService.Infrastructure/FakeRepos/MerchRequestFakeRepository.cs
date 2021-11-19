@@ -31,5 +31,10 @@ namespace Ozon.Route256.MerchandiseService.Infrastructure.FakeRepos
         {
             throw new System.NotImplementedException();
         }
+
+        public Task Update(MerchRequest merchRequest, CancellationToken cancellationToken)
+        {
+            throw new System.NotImplementedException();
+        }
     }
 }

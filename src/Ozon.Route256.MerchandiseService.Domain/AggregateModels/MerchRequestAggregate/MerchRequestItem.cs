@@ -17,6 +17,10 @@ namespace Ozon.Route256.MerchandiseService.Domain.AggregateModels.MerchRequestAg
             {
                 SetIssuedQuantity(issuedQuantity);
             }
+            else
+            {
+                SetIssuedQuantity(new IssuedQuantity(0));
+            }
         }
         
         public Sku Sku { get; }
@@ -27,7 +31,7 @@ namespace Ozon.Route256.MerchandiseService.Domain.AggregateModels.MerchRequestAg
         public MerchRequestItemStatus MerchRequestItemStatus
         {
             get
-            {   
+            {
                 if (Equals(Quantity.Value, IssuedQuantity.Value))
                 {
                     return MerchRequestItemStatus.Done;

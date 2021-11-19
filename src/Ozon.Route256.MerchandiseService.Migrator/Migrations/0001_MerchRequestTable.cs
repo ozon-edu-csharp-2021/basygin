@@ -14,13 +14,13 @@ namespace Ozon.Route256.MerchandiseService.Migrator.Migrations
             Create
                 .Table("merch_requests")
                 .WithColumn("id").AsInt64().Identity().PrimaryKey()
-                .WithColumn("type").AsInt32().NotNullable()
-                .WithColumn("employee_id").AsInt64().NotNullable()
-                .WithColumn("email").AsString().NotNullable()
-                .WithColumn("size").AsInt32().NotNullable()
-                .WithColumn("status").AsInt32().NotNullable()
-                .WithColumn("created_at").AsDateTime().NotNullable()
-                .WithColumn("issued_at").AsDateTime();
+                .WithColumn("type").AsInt32()
+                .WithColumn("employee_id").AsInt64()
+                .WithColumn("email").AsString()
+                .WithColumn("size").AsInt32()
+                .WithColumn("status").AsInt32()
+                .WithColumn("created_at").AsDateTime()
+                .WithColumn("issued_at").AsDateTime().Nullable();
         }
 
         public override void Down()

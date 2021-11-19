@@ -33,12 +33,13 @@ namespace Ozon.Route256.MerchandiseService.Infrastructure.Handlers.MerchRequestA
         {
             var employee = new Employee(
                 request.EmployeeId,
-                Enumeration.GetAll<Size>().FirstOrDefault(it => it.Id.Equals(request.Size)),
+                Size.Parse(request.Size),
                 new Email(request.Email));
 
-            var requestType = Enumeration.GetAll<MerchRequestType>()
-                .FirstOrDefault(it => it.Id.Equals(request.MerchType));
-            
+            var requestType = MerchRequestType.Parse(request.MerchType);
+
+            await _unitOfWork.StartTransaction(cancellationToken);
+
             var existingMerchRequest =
                 await _merchRequestRepository.GetMerchRequestByEmployeeIdAndMerchTypeAsync(employee.Id, requestType,
                     cancellationToken);

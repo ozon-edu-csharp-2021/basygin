@@ -7,60 +7,47 @@ namespace Ozon.Route256.MerchandiseService.Domain.BaseModels
     public abstract class Entity
     {
         int? _requestedHashCode;
-        int _Id;
-        public virtual int Id
-        {
-            get
-            {
-                return _Id;
-            }
-            protected set
-            {
-                _Id = value;
-            }
-        }
+        public virtual long Id { get; protected set; }
 
-        private List<INotification> _domainEvents;
-        public IReadOnlyCollection<INotification> DomainEvents => _domainEvents?.AsReadOnly();
+        private readonly List<INotification> _domainEvents = new();
+
+        public IReadOnlyCollection<INotification> DomainEvents => _domainEvents.AsReadOnly();
 
         public void AddDomainEvent(INotification eventItem)
         {
-            _domainEvents = _domainEvents ?? new List<INotification>();
             _domainEvents.Add(eventItem);
         }
 
         public void RemoveDomainEvent(INotification eventItem)
         {
-            _domainEvents?.Remove(eventItem);
+            _domainEvents.Remove(eventItem);
         }
 
         public void ClearDomainEvents()
         {
-            _domainEvents?.Clear();
+            _domainEvents.Clear();
         }
 
         public bool IsTransient()
         {
-            return this.Id == default(Int32);
+            return Id == default(Int64);
         }
 
         public override bool Equals(object obj)
         {
-            if (obj == null || !(obj is Entity))
+            if (obj is not Entity entity)
                 return false;
 
-            if (Object.ReferenceEquals(this, obj))
+            if (ReferenceEquals(this, entity))
                 return true;
 
-            if (this.GetType() != obj.GetType())
+            if (GetType() != entity.GetType())
                 return false;
 
-            Entity item = (Entity)obj;
-
-            if (item.IsTransient() || this.IsTransient())
+            if (entity.IsTransient() || IsTransient())
                 return false;
             else
-                return item.Id == this.Id;
+                return entity.Id == Id;
         }
 
         public override int GetHashCode()
@@ -68,7 +55,7 @@ namespace Ozon.Route256.MerchandiseService.Domain.BaseModels
             if (!IsTransient())
             {
                 if (!_requestedHashCode.HasValue)
-                    _requestedHashCode = this.Id.GetHashCode() ^ 31; // XOR for random distribution (http://blogs.msdn.com/b/ericlippert/archive/2011/02/28/guidelines-and-rules-for-gethashcode.aspx)
+                    _requestedHashCode = HashCode.Combine(Id, 31);
 
                 return _requestedHashCode.Value;
             }

@@ -54,7 +54,7 @@ namespace Ozon.Route256.MerchandiseService.Domain.AggregateModels.MerchRequestAg
 
         public void AddItem(MerchRequestItem merchRequestItem)
         {
-            if (!Equals(Status, MerchRequestStatus.InWork) && Equals(Status, MerchRequestStatus.New))
+            if (!Equals(Status, MerchRequestStatus.InWork) && !Equals(Status, MerchRequestStatus.New))
             {
                 throw new MerchRequestWrongStatusException(
                     $"Unable to add new item for merch request in status {Status.Name}");

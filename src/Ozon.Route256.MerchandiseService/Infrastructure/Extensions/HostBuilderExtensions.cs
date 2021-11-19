@@ -53,7 +53,6 @@ namespace Ozon.Route256.MerchandiseService.Infrastructure.Extensions
             }
             builder.ConfigureWebHostDefaults(webBuilder =>
             {
-                webBuilder.UseStartup<Startup>();
                 webBuilder.ConfigureKestrel(
                     options =>
                     {

@@ -16,7 +16,12 @@ namespace Ozon.Route256.MerchandiseService.Migrator.Migrations
                 .WithColumn("merch_request_id").AsInt64().ForeignKey("merch_requests", "id")
                 .WithColumn("sku").AsInt64()
                 .WithColumn("quantity").AsInt32()
-                .WithColumn("quantity_issued").AsInt32().Nullable();
+                .WithColumn("quantity_issued").AsInt32();
+
+            Create.
+                UniqueConstraint().
+                OnTable("merch_request_items")
+                .Columns(new string[] { "merch_request_id", "sku" });
         }
 
         public override void Down()

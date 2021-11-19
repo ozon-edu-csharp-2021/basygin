@@ -11,7 +11,7 @@ namespace Ozon.Route256.MerchandiseService.Infrastructure.Filters
             var exception = new
             {
                 ExceptionType = context.Exception.GetType().Name,
-                Message = context.Exception.StackTrace
+                Message = context.Exception.ToString()
             };
             var jsonResult = new JsonResult(exception)
             {

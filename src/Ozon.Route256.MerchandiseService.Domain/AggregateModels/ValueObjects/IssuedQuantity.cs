@@ -15,7 +15,7 @@ namespace Ozon.Route256.MerchandiseService.Domain.AggregateModels.ValueObjects
 
         private void SetIssuedQuantity(int quantity)
         {
-            if (quantity <= 0)
+            if (quantity < 0)
             {
                 throw new InvalidQuantityException("Quantity is less or equal to zero");
             }

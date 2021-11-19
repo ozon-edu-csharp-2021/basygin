@@ -31,8 +31,9 @@ namespace Ozon.Route256.MerchandiseService.Infrastructure.Repositories.Implement
         public async Task<MerchRequest> CreateMerchRequestAsync(MerchRequest merchRequest, CancellationToken cancellationToken)
         {
             const string sql = @"
-                INSERT INTO public.merch_requests(type, employee_id, email, size, status, created_at, issued_at)
-	                VALUES (@type, @employeeId, @email, @size, @status, @createdAt);";
+                INSERT INTO public.merch_requests(type, employee_id, email, size, status, created_at)
+	                VALUES (@type, @employeeId, @email, @size, @status, @createdAt);
+                SELECT currval('merch_requests_id_seq');";
 
             var merchRequestCommandParameters = new
             {
@@ -51,23 +52,72 @@ namespace Ozon.Route256.MerchandiseService.Infrastructure.Repositories.Implement
                 cancellationToken: cancellationToken);
 
             var connection = await _dbConnectionFactory.CreateConnection(cancellationToken);
-            await connection.ExecuteAsync(commandDefinition);
+            var merchRequestId = await connection.ExecuteScalarAsync<long>(commandDefinition);
+
+            merchRequest.SetId(merchRequestId);
+
             _changeTracker.Track(merchRequest);
             return merchRequest;
         }
 
         public IUnitOfWork UnitOfWork { get; }
         
-        public Task<MerchRequest> GetMerchRequestByIdAsync(long id, CancellationToken token)
+        public async Task<MerchRequest> GetMerchRequestByIdAsync(long id, CancellationToken cancellationToken)
         {
-            throw new System.NotImplementedException();
+            const string sql = @"
+                SELECT id, type, employee_id as EmployeeId, email, size, status, created_at as CreatedAt, issued_at as IssuedAt
+                FROM merch_requests
+                WHERE id = @merchRequestId;";
+
+            var parameters = new
+            {
+                merchRequestId = id
+            };
+
+            var commandDefinition = new CommandDefinition(
+                sql,
+                parameters: parameters,
+                commandTimeout: Timeout,
+                cancellationToken: cancellationToken);
+            var connection = await _dbConnectionFactory.CreateConnection(cancellationToken);
+
+            var merchRequestsDb = await connection.QueryAsync<MerchRequestDb>(commandDefinition);
+
+
+            if (!merchRequestsDb.Any())
+            {
+                return null;
+            }
+
+            var merchRequestDb = merchRequestsDb.First();
+
+            var merchRequest = new MerchRequest(
+                MerchRequestType.Parse(merchRequestDb.Type),
+                new Employee(
+                    merchRequestDb.EmployeeId,
+                    Size.Parse(merchRequestDb.Size),
+                    new Email(merchRequestDb.Email)
+                    ),
+                merchRequestDb.CreatedAt,
+                merchRequestDb.IssuedAt
+                );
+
+            merchRequest.SetId(merchRequestDb.Id);
+
+            var merchRequestItems = await GetMerchRequestItems(merchRequest.Id, cancellationToken);
+
+            merchRequest.SetMerchRequestItems(merchRequestItems);
+
+            // Добавление после успешно выполненной операции.
+            _changeTracker.Track(merchRequest);
+            return merchRequest;
         }
 
         public async Task<MerchRequest> GetMerchRequestByEmployeeIdAndMerchTypeAsync(long employeeId, MerchRequestType merchType,
             CancellationToken cancellationToken)
         {
             const string sql = @"
-                SELECT id, type, employee_id, email, size, status, created_at, issued_at
+                SELECT id, type, employee_id as EmployeeId, email, size, status, created_at as CreatedAt, issued_at as IssuedAt
                 FROM merch_requests
                 WHERE type = @MerchRequestType and employee_id = @EmployeeId;";
 
@@ -121,7 +171,7 @@ namespace Ozon.Route256.MerchandiseService.Infrastructure.Repositories.Implement
             throw new System.NotImplementedException();
         }
 
-        private async Task<List<MerchRequestItem>> GetMerchRequestItems(int id, CancellationToken cancellationToken)
+        private async Task<List<MerchRequestItem>> GetMerchRequestItems(long id, CancellationToken cancellationToken)
         {
             const string sql = @"
                 SELECT sku, quantity, quantity_issued
@@ -154,6 +204,70 @@ namespace Ozon.Route256.MerchandiseService.Infrastructure.Repositories.Implement
             }
 
             return result;
+        }
+
+        public async Task Update(MerchRequest merchRequest, CancellationToken cancellationToken)
+        {
+            const string sql = @"
+                UPDATE merch_requests
+                SET
+                    status = @status,
+                    issued_at = @issuedAt
+                WHERE id = @merchRequestId;";
+
+            var parameters = new
+            {
+                merchRequestId = merchRequest.Id,
+                status = merchRequest.Status.Id,
+                issuedAt = merchRequest.IssuedAt
+            };
+
+            var commandDefinition = new CommandDefinition(
+                sql,
+                parameters: parameters,
+                commandTimeout: Timeout,
+                cancellationToken: cancellationToken);
+
+            var connection = await _dbConnectionFactory.CreateConnection(cancellationToken);
+            await connection.ExecuteAsync(commandDefinition);
+
+            _changeTracker.Track(merchRequest);
+
+            foreach (var item in merchRequest.Items)
+            {
+                await UpdateMerchRequestItem(merchRequest.Id, item, cancellationToken);
+            }
+        }
+
+        private async Task UpdateMerchRequestItem(long merchRequestId, MerchRequestItem item, CancellationToken cancellationToken)
+        {
+            const string sql = @"
+                INSERT INTO public.merch_request_items(
+	                merch_request_id, sku, quantity, quantity_issued)
+	                VALUES (@merchRequestId, @sku, @quantity, @quantityIssued)
+                  ON CONFLICT (merch_request_id, sku)
+                  DO UPDATE SET
+                    quantity = EXCLUDED.quantity,
+                    quantity_issued = EXCLUDED.quantity_issued;";
+
+            var parameters = new
+            {
+                merchRequestId = merchRequestId,
+                sku = item.Sku.Value,
+                quantity = item.Quantity.Value,
+                quantityIssued = item.IssuedQuantity.Value
+            };
+
+            var commandDefinition = new CommandDefinition(
+                sql,
+                parameters: parameters,
+                commandTimeout: Timeout,
+                cancellationToken: cancellationToken);
+
+            var connection = await _dbConnectionFactory.CreateConnection(cancellationToken);
+            await connection.ExecuteAsync(commandDefinition);
+
+            _changeTracker.Track(item);
         }
     }
 }
