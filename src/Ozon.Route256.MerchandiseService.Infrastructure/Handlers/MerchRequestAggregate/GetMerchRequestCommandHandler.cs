@@ -42,6 +42,8 @@ namespace Ozon.Route256.MerchandiseService.Infrastructure.Handlers.MerchRequestA
                 merchRequest.SetStatusInWork();
             }
 
+            await _merchRequestRepository.Update(merchRequest, cancellationToken);
+
             await _unitOfWork.SaveChangesAsync(cancellationToken);
 
             return merchRequest;

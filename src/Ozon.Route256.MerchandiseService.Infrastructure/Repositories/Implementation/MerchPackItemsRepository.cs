@@ -47,9 +47,14 @@ namespace Ozon.Route256.MerchandiseService.Infrastructure.Repositories.Implement
 
             var merchPackItems = await connection.QueryAsync<MerchPackItemDb>(commandDefinition);
 
-            // Добавление после успешно выполненной операции.
             var result = merchPackItems.Select(x => new MerchPackItem(new Sku(x.Sku), new Quantity(x.Quantity))).ToList();
-            //_changeTracker.Track(result);
+
+            // Добавление после успешно выполненной операции.
+            foreach (var item in result)
+            {
+                _changeTracker.Track(item);
+            }
+
             return result;
         }
     }
