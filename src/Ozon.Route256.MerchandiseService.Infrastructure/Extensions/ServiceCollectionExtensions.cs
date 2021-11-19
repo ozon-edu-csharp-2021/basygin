@@ -2,7 +2,6 @@
 using MediatR;
 using Microsoft.Extensions.DependencyInjection;
 using Ozon.Route256.MerchandiseService.Domain.Repository;
-using Ozon.Route256.MerchandiseService.Infrastructure.FakeRepos;
 using Ozon.Route256.MerchandiseService.Infrastructure.Integrations.StockApi;
 using Ozon.Route256.MerchandiseService.Infrastructure.Repositories.Implementation;
 

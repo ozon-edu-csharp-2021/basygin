@@ -21,6 +21,17 @@ namespace Ozon.Route256.MerchandiseService.Migrator.Migrations
                 .WithColumn("status").AsInt32()
                 .WithColumn("created_at").AsDateTime()
                 .WithColumn("issued_at").AsDateTime().Nullable();
+
+            Create
+                .Index()
+                .OnTable("merch_requests")
+                .OnColumn("id").Ascending();
+
+            Create
+                .Index()
+                .OnTable("merch_requests")
+                .OnColumn("type").Ascending()
+                .OnColumn("employee_id").Ascending();
         }
 
         public override void Down()

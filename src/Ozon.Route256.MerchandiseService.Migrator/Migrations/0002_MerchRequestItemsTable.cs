@@ -22,6 +22,11 @@ namespace Ozon.Route256.MerchandiseService.Migrator.Migrations
                 UniqueConstraint().
                 OnTable("merch_request_items")
                 .Columns(new string[] { "merch_request_id", "sku" });
+
+            Create
+                .Index()
+                .OnTable("merch_request_items")
+                .OnColumn("merch_request_id").Ascending();
         }
 
         public override void Down()
