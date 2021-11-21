@@ -33,7 +33,7 @@ namespace Ozon.Route256.MerchandiseService.Infrastructure.Repositories.Implement
             const string sql = @"
                 INSERT INTO public.merch_requests(type, employee_id, email, size, status, created_at)
 	                VALUES (@type, @employeeId, @email, @size, @status, @createdAt);
-                SELECT currval('merch_requests_id_seq');";
+                RETURNING merch_requests.id;";
 
             var merchRequestCommandParameters = new
             {
@@ -195,8 +195,9 @@ namespace Ozon.Route256.MerchandiseService.Infrastructure.Repositories.Implement
             var result = merchRequestItemsDb.Select(x => new MerchRequestItem(
                 new Sku(x.Sku),
                 new Quantity(x.Quantity),
-                x.QuantityIssued.HasValue ? new IssuedQuantity(x.QuantityIssued.Value) : null)
-                ).ToList();
+                new IssuedQuantity(x.QuantityIssued)
+                )
+            ).ToList();
 
             foreach (var stockItem in result)
             {

@@ -33,8 +33,13 @@ namespace Ozon.Route256.MerchandiseService.Domain.BaseModels
             return Id == default(Int64);
         }
 
-        public override bool Equals(object obj)
+        public override bool Equals(object? obj)
         {
+            if (obj == null)
+            {
+                return false;
+            }
+
             if (obj is not Entity entity)
                 return false;
 

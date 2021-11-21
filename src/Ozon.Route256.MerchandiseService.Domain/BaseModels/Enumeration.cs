@@ -22,8 +22,13 @@ namespace Ozon.Route256.MerchandiseService.Domain.BaseModels
                      .Select(f => f.GetValue(null))
                      .Cast<T>();
         
-        public override bool Equals(object obj)
+        public override bool Equals(object? obj)
         {
+            if (obj == null)
+            {
+                return false;
+            }
+
             if (obj is not Enumeration otherValue)
             {
                 return false;

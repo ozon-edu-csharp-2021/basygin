@@ -124,7 +124,7 @@ namespace Ozon.Route256.MerchandiseService.Domain.AggregateModels.MerchRequestAg
 
         public void SetId(long id)
         {
-            Id = (int)id;
+            Id = id;
         }
 
         public void SetMerchRequestItems(List<MerchRequestItem> merchRequestItems)

@@ -10,6 +10,6 @@ namespace Ozon.Route256.MerchandiseService.Infrastructure.Repositories.Models
     {
         public long Sku { get; set; }
         public int Quantity { get; set; }
-        public int? QuantityIssued { get; set; }
+        public int QuantityIssued { get; set; }
     }
 }
