@@ -38,8 +38,6 @@ namespace Ozon.Route256.MerchandiseService.Infrastructure.Handlers.MerchRequestA
 
             var requestType = MerchRequestType.Parse(request.MerchType);
 
-            await _unitOfWork.StartTransaction(cancellationToken);
-
             var existingMerchRequest =
                 await _merchRequestRepository.GetMerchRequestByEmployeeIdAndMerchTypeAsync(employee.Id, requestType,
                     cancellationToken);
@@ -51,6 +49,8 @@ namespace Ozon.Route256.MerchandiseService.Infrastructure.Handlers.MerchRequestA
             }
 
             var merchRequest = await CreateAndFillMerchRequest(requestType, employee, cancellationToken);
+
+            await _unitOfWork.StartTransaction(cancellationToken);
 
             merchRequest.SetStatusInWork();
 

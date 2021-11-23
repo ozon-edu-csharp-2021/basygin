@@ -32,8 +32,8 @@ namespace Ozon.Route256.MerchandiseService.Infrastructure.Repositories.Implement
         {
             const string sql = @"
                 INSERT INTO public.merch_requests(type, employee_id, email, size, status, created_at)
-	                VALUES (@type, @employeeId, @email, @size, @status, @createdAt);
-                RETURNING merch_requests.id;";
+	                VALUES (@type, @employeeId, @email, @size, @status, @createdAt)
+                RETURNING id;";
 
             var merchRequestCommandParameters = new
             {

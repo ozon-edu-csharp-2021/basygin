@@ -25,8 +25,6 @@ namespace Ozon.Route256.MerchandiseService.Infrastructure.Handlers.MerchRequestA
 
         public async Task<MerchRequest> Handle(GetMerchRequestQuery request, CancellationToken cancellationToken)
         {
-            await _unitOfWork.StartTransaction(cancellationToken);
-
             var merchRequest =
                 await _merchRequestRepository.GetMerchRequestByIdAsync(request.MerchRequestId, cancellationToken);
 
@@ -41,6 +39,8 @@ namespace Ozon.Route256.MerchandiseService.Infrastructure.Handlers.MerchRequestA
             {
                 merchRequest.SetStatusInWork();
             }
+
+            await _unitOfWork.StartTransaction(cancellationToken);
 
             await _merchRequestRepository.Update(merchRequest, cancellationToken);
 
