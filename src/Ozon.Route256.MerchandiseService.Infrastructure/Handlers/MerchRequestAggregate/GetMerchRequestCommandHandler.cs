@@ -2,6 +2,7 @@
 using System.Threading.Tasks;
 using MediatR;
 using Ozon.Route256.MerchandiseService.Domain.AggregateModels.MerchRequestAggregate;
+using Ozon.Route256.MerchandiseService.Domain.BaseModels;
 using Ozon.Route256.MerchandiseService.Domain.Repository;
 using Ozon.Route256.MerchandiseService.Infrastructure.Commands;
 using Ozon.Route256.MerchandiseService.Infrastructure.Integrations.StockApi;
@@ -11,18 +12,15 @@ namespace Ozon.Route256.MerchandiseService.Infrastructure.Handlers.MerchRequestA
 {
     public class GetMerchRequestCommandHandler : IRequestHandler<GetMerchRequestQuery, MerchRequest>
     {
-        private readonly IMerchPackItemRepository _merchItemRepository;
         private readonly IMerchRequestRepository _merchRequestRepository;
-        private readonly IStockApi _stockApi;
         private readonly IMediator _mediator;
+        private readonly IUnitOfWork _unitOfWork;
 
-        public GetMerchRequestCommandHandler(IStockApi stockApi, IMerchRequestRepository merchRequestRepository,
-            IMerchPackItemRepository merchItemRepository, IMediator mediator)
+        public GetMerchRequestCommandHandler(IMerchRequestRepository merchRequestRepository, IMediator mediator, IUnitOfWork unitOfWork)
         {
-            _stockApi = stockApi;
             _merchRequestRepository = merchRequestRepository;
-            _merchItemRepository = merchItemRepository;
             _mediator = mediator;
+            _unitOfWork = unitOfWork;
         }
 
         public async Task<MerchRequest> Handle(GetMerchRequestQuery request, CancellationToken cancellationToken)
@@ -41,6 +39,12 @@ namespace Ozon.Route256.MerchandiseService.Infrastructure.Handlers.MerchRequestA
             {
                 merchRequest.SetStatusInWork();
             }
+
+            await _unitOfWork.StartTransaction(cancellationToken);
+
+            await _merchRequestRepository.Update(merchRequest, cancellationToken);
+
+            await _unitOfWork.SaveChangesAsync(cancellationToken);
 
             return merchRequest;
         }

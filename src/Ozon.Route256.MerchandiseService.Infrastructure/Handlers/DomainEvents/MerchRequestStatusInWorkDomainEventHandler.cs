@@ -3,6 +3,7 @@ using System.Threading;
 using System.Threading.Tasks;
 using MediatR;
 using Ozon.Route256.MerchandiseService.Domain.AggregateModels.MerchRequestAggregate;
+using Ozon.Route256.MerchandiseService.Domain.BaseModels;
 using Ozon.Route256.MerchandiseService.Domain.Events;
 using Ozon.Route256.MerchandiseService.Domain.Repository;
 using Ozon.Route256.MerchandiseService.Infrastructure.Integrations.StockApi;
@@ -13,13 +14,15 @@ namespace Ozon.Route256.MerchandiseService.Infrastructure.Handlers.DomainEvents
     {
         private readonly IMerchRequestRepository _merchRequestRepository;
         private readonly IStockApi _stockApi;
+        private readonly IUnitOfWork _unitOfWork;
 
-        public MerchRequestStatusInWorkDomainEventHandler(IMerchRequestRepository merchRequestRepository, IStockApi stockApi)
+        public MerchRequestStatusInWorkDomainEventHandler(IMerchRequestRepository merchRequestRepository, IStockApi stockApi, IUnitOfWork unitOfWork)
         {
             _merchRequestRepository = merchRequestRepository;
             _stockApi = stockApi;
+            _unitOfWork = unitOfWork;
         }
-        
+
         public async Task Handle(MerchRequestStatusInWorkDomainEvent notification, CancellationToken cancellationToken)
         {
             var merchRequest = notification.MerchRequest;
@@ -39,8 +42,8 @@ namespace Ozon.Route256.MerchandiseService.Infrastructure.Handlers.DomainEvents
             {
                 merchRequest.SetStatusWait();
             }
-            
-            await _merchRequestRepository.UnitOfWork.SaveEntitiesAsync(cancellationToken);
+
+            await _merchRequestRepository.Update(merchRequest, cancellationToken);
         }
 
         private async Task IssueMerchRequestItem(MerchRequestItem merchRequestItem, CancellationToken cancellationToken)

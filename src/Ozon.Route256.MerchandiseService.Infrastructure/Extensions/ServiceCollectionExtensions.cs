@@ -2,8 +2,8 @@
 using MediatR;
 using Microsoft.Extensions.DependencyInjection;
 using Ozon.Route256.MerchandiseService.Domain.Repository;
-using Ozon.Route256.MerchandiseService.Infrastructure.FakeRepos;
 using Ozon.Route256.MerchandiseService.Infrastructure.Integrations.StockApi;
+using Ozon.Route256.MerchandiseService.Infrastructure.Repositories.Implementation;
 
 namespace Ozon.Route256.MerchandiseService.Infrastructure.Extensions
 {
@@ -33,8 +33,8 @@ namespace Ozon.Route256.MerchandiseService.Infrastructure.Extensions
         {
             // тут будут добавляться репозитории
             
-            services.AddScoped<IMerchRequestRepository, MerchRequestFakeRepository>();
-            services.AddScoped<IMerchPackItemRepository, MerchPackItemsFakeRepository>();
+            services.AddScoped<IMerchRequestRepository, MerchRequestRepository>();
+            services.AddScoped<IMerchPackItemRepository, MerchPackItemsRepository>();
             
             return services;
         }

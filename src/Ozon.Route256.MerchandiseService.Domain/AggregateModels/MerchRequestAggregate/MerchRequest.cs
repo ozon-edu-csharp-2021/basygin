@@ -13,11 +13,16 @@ namespace Ozon.Route256.MerchandiseService.Domain.AggregateModels.MerchRequestAg
     /// </summary>
     public class MerchRequest : Entity, IAggregateRoot
     {
-        public MerchRequest(MerchRequestType type, Employee employee, DateTime createdAt)
+        public MerchRequest(MerchRequestType type, Employee employee, DateTime createdAt, DateTime? issuedAt = null)
         {
             Type = type;
             Employee = employee ?? throw new MerchRequestItemArgumentNullException(nameof(employee));
             CreatedAt = createdAt;
+
+            if (issuedAt.HasValue)
+            {
+                SetIssuedDate(issuedAt.Value);
+            }
             
             Items = new List<MerchRequestItem>();
             Status = MerchRequestStatus.New;
@@ -43,15 +48,13 @@ namespace Ozon.Route256.MerchandiseService.Domain.AggregateModels.MerchRequestAg
             {
                 throw new MerchRequestWrongStatusException($"Unable to set issued date for merch request in status {Status.Name}");
             }
-
-            AddItem(null);
             
             IssuedAt = issuedDate;
         }
 
         public void AddItem(MerchRequestItem merchRequestItem)
         {
-            if (!Equals(Status, MerchRequestStatus.InWork))
+            if (!Equals(Status, MerchRequestStatus.InWork) && !Equals(Status, MerchRequestStatus.New))
             {
                 throw new MerchRequestWrongStatusException(
                     $"Unable to add new item for merch request in status {Status.Name}");
@@ -117,6 +120,16 @@ namespace Ozon.Route256.MerchandiseService.Domain.AggregateModels.MerchRequestAg
         private void ThrowMerchRequestStatusException(MerchRequestStatus statusToChange)
         {
             throw new MerchRequestWrongStatusException($"Is not possible to change the merch request status from {Status.Name} to {statusToChange.Name}.");
+        }
+
+        public void SetId(long id)
+        {
+            Id = id;
+        }
+
+        public void SetMerchRequestItems(List<MerchRequestItem> merchRequestItems)
+        {
+            Items = merchRequestItems;
         }
     }
 }

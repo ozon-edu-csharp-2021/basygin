@@ -6,7 +6,7 @@ using Ozon.Route256.MerchandiseService.Domain.Exceptions;
 
 namespace Ozon.Route256.MerchandiseService.Domain.AggregateModels.ValueObjects
 {
-    public class MerchPackItem : ValueObject
+    public class MerchPackItem : Entity
     {
         public MerchPackItem(Sku sku, Quantity quantity)
         {
@@ -17,11 +17,5 @@ namespace Ozon.Route256.MerchandiseService.Domain.AggregateModels.ValueObjects
         public Sku Sku { get; }
         
         public Quantity Quantity { get; }
-
-        protected override IEnumerable<object> GetEqualityComponents()
-        {
-            yield return Sku;
-            yield return Quantity;
-        }
     }
 }
